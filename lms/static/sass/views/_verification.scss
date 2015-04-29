@@ -694,7 +694,6 @@
         }
 
         .control {
-          // position: absolute;
 
           .action {
             @extend %btn-primary-blue;
@@ -1014,7 +1013,6 @@
     border-radius: ($baseline/10);
     background: $m-gray-l4;
     padding: ($baseline*0.75) $baseline;
-    text-align: center;
 
     .help-inline, .wizard-steps {
 
@@ -1025,12 +1023,6 @@
       @include float(left);
       width: flex-grid(6,12);
       @include margin(($baseline*0.75), flex-gutter(), 0, 0);
-    }
-
-    .wizard-steps {
-      // @include float(right);
-      // width: flex-grid(6,12);
-      // @include text-align(right);
     }
 
     // STATE: is ready
@@ -1144,9 +1136,7 @@
       @include clearfix();
 
       .help-item {
-        @include fill-parent;
-        // @include float(left);
-        // @include margin-right(flex-gutter());
+        @include fill-parent;\
         margin-bottom: 25px;
 
         &:last-child {
@@ -1751,12 +1741,11 @@
     }
 
     .nav-wizard {
-      text-align: center;
 
       .prompt-verify {
         @include float(left);
-        width: flex-grid(6,12);
         @include margin(0, flex-gutter(), 0, 0);
+        width: flex-grid(6,12);
 
         .title {
           @extend %hd-lv4;
@@ -2322,8 +2311,8 @@
 
         .prompt-verify {
           @include float(left);
-          width: flex-grid(6,12);
           @include margin(0, flex-gutter(), 0, 0);
+          width: flex-grid(6,12);
 
           .title {
             @extend %hd-lv4;
