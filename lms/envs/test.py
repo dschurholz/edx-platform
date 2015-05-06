@@ -497,3 +497,6 @@ PROFILE_IMAGE_MIN_BYTES = 100
 # Enable the LTI provider feature for testing
 FEATURES['ENABLE_LTI_PROVIDER'] = True
 INSTALLED_APPS += ('lti_provider',)
+
+# Software secure fake page feature flag
+FEATURES['ENABLE_SOFTWARE_SECURE_FAKE'] = True
