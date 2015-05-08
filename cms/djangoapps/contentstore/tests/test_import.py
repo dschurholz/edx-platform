@@ -290,6 +290,7 @@ class ContentStoreImportTest(SignalDisconnectTestMixin, ModuleStoreTestCase):
         Test that video components with same edx_video_id are present while re-importing
         """
         with modulestore().default_store(store):
+            content_store = contentstore()
             module_store = modulestore()
             course_id = module_store.make_course_key('edX', 'test_video_modules', '2015_M4')
 
@@ -298,7 +299,10 @@ class ContentStoreImportTest(SignalDisconnectTestMixin, ModuleStoreTestCase):
                 module_store,
                 self.user.id,
                 TEST_DATA_DIR,
-                ['test_course_video_components'],
+                ['test_import_course'],
+                static_content_store=content_store,
+                do_import_static=False,
+                verbose=True,
                 target_id=course_id,
                 create_if_not_present=True
             )
@@ -309,6 +313,9 @@ class ContentStoreImportTest(SignalDisconnectTestMixin, ModuleStoreTestCase):
                 self.user.id,
                 TEST_DATA_DIR,
                 ['test_import_course'],
+                static_content_store=content_store,
+                do_import_static=False,
+                verbose=True,
                 target_id=course_id,
                 create_if_not_present=True
             )
@@ -318,12 +325,12 @@ class ContentStoreImportTest(SignalDisconnectTestMixin, ModuleStoreTestCase):
 
             self.assertIsNotNone(course)
 
-            vertical_location = course_key.make_usage_key('vertical', '98011c11106f447e8869f324f8322e4a')
+            vertical_location = course_key.make_usage_key('vertical', 'vertical_test')
             vertical = module_store.get_item(vertical_location)
 
             self.assertIsNotNone(vertical)
-            self.assertGreater(len(vertical.children), 0)
+            self.assertGreater(len(vertical.children), 1)
 
-            video = module_store.get_item(vertical.children[0])
+            video = module_store.get_item(vertical.children[1])
             self.assertIsNotNone(video)
-            self.assertEqual(video.display_name, 'Test Video')
+            self.assertEqual(video.display_name, 'default')
