@@ -41,7 +41,7 @@ def mobile_course_access(depth=0, verify_enrolled=True):
                         course_id,
                         depth=depth
                     )
-                except Http404 as error:
+                except Http404:
                     # any_unfulfilled_milestones called a second time since get_course_with_access returns a bool
                     if any_unfulfilled_milestones(course_id, request.user.id):
                         message = {

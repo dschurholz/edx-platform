@@ -93,6 +93,5 @@ class MilestonesHelpersTestCase(ModuleStoreTestCase):
         """ Tests any_unfulfilled_milestones for invalid arguments """
         with self.assertRaises(InvalidCourseKeyException):
             milestones_helpers.any_unfulfilled_milestones(None, self.user)
-
         with self.assertRaises(InvalidUserException):
             milestones_helpers.any_unfulfilled_milestones(self.course.id, None)
