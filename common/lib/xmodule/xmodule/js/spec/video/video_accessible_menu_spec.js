@@ -128,6 +128,73 @@
                     $(window).click();
                     expect(menuList).not.toHaveClass('is-visible');
                 });
+
+                    it('open the menu on ENTER keydown', function () {
+                    container.trigger(keyPressEvent(KEY.ENTER));
+                    expect(container).toHaveClass('is-visible');
+                    expect(menuItemsLinks.last().focus).toHaveBeenCalled();
+                });
+
+                it('open the menu on SPACE keydown', function () {
+                    container.trigger(keyPressEvent(KEY.SPACE));
+                    expect(container).toHaveClass('is-visible');
+                    expect(menuItemsLinks.last().focus).toHaveBeenCalled();
+                });
+
+                it('open the menu on UP keydown', function () {
+                    container.trigger(keyPressEvent(KEY.UP));
+                    expect(container).toHaveClass('is-visible');
+                    expect(menuItemsLinks.last().focus).toHaveBeenCalled();
+                });
+
+                it('close the menu on ESCAPE keydown', function () {
+                    container.trigger(keyPressEvent(KEY.ESCAPE));
+                    expect(container).not.toHaveClass('is-visible');
+                });
+
+                it('UP and DOWN keydown function as expected on menu items',
+                   function () {
+                    // Iterate through list in both directions and check if
+                    // things wrap up correctly.
+                    var lastEntry = menuItemsLinks.length-1, i;
+
+                    // First open menu
+                    container.trigger(keyPressEvent(KEY.UP));
+
+                    // Iterate with UP key until we have looped.
+                    for (i = lastEntry; i >= 0; i--) {
+                        menuItemsLinks.eq(i).trigger(keyPressEvent(KEY.UP));
+                    }
+
+                    // Iterate with DOWN key until we have looped.
+                    for (i = 0; i <= lastEntry; i++) {
+                        menuItemsLinks.eq(i).trigger(keyPressEvent(KEY.DOWN));
+                    }
+
+                    // Test if each element has been called twice.
+                    expect($.fn.focus.calls.length)
+                        .toEqual(2*menuItemsLinks.length+1);
+                });
+
+                it('ESC keydown on menu item closes menu', function () {
+                    // First open menu. Focus is on last speed entry.
+                    container.trigger(keyPressEvent(KEY.UP));
+                    menuItemsLinks.last().trigger(keyPressEvent(KEY.ESCAPE));
+
+                    // Menu is closed and focus has been returned to speed
+                    // control.
+                    expect(container).not.toHaveClass('is-visible');
+                    expect(container.focus).toHaveBeenCalled();
+                });
+
+                it('ENTER keydown on menu item selects its data and closes menu',
+                   function () {
+                    // First open menu.
+                    container.trigger(keyPressEvent(KEY.UP));
+                    // Focus on '.txt'
+                    menuItemsLinks.eq(0).focus();
+                    menuItemsLinks.eq(0).trigger(keyPressEvent(KEY.ENTER));
+-                });
             });
         });
 
