@@ -327,6 +327,7 @@ class GetThreadListTest(CommentsServiceMockMixin, ModuleStoreTestCase):
     """Test for get_thread_list"""
     def setUp(self):
         super(GetThreadListTest, self).setUp()
+        httpretty.reset()
         httpretty.enable()
         self.addCleanup(httpretty.disable)
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -345,7 +346,7 @@ class GetThreadListTest(CommentsServiceMockMixin, ModuleStoreTestCase):
         """
         course = course or self.course
         self.register_get_threads_response(threads, page, num_pages)
-        ret = get_thread_list(self.request, course.id, page, page_size)
+        ret = get_thread_list(self.request, course, page, page_size)
         return ret
 
     def create_role(self, role_name, users):
@@ -604,7 +605,7 @@ class GetThreadListTest(CommentsServiceMockMixin, ModuleStoreTestCase):
         # Test page past the last one
         self.register_get_threads_response([], page=3, num_pages=3)
         with self.assertRaises(Http404):
-            get_thread_list(self.request, self.course.id, page=4, page_size=10)
+            get_thread_list(self.request, self.course, page=4, page_size=10)
 
     @ddt.data(
         (FORUM_ROLE_ADMINISTRATOR, True, False, True),
