@@ -308,7 +308,7 @@ class ContentStoreImportTest(SignalDisconnectTestMixin, ModuleStoreTestCase):
                 module_store,
                 self.user.id,
                 TEST_DATA_DIR,
-                ['test_course_video_components'],
+                ['test_import_course'],
                 target_id=course_id,
                 create_if_not_present=True
             )
