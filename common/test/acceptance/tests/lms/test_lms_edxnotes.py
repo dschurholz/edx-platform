@@ -6,7 +6,7 @@ from ...fixtures.course import CourseFixture, XBlockFixtureDesc
 from ...pages.lms.auto_auth import AutoAuthPage
 from ...pages.lms.course_nav import CourseNavPage
 from ...pages.lms.courseware import CoursewarePage
-from ...pages.lms.edxnotes import EdxNotesUnitPage, EdxNotesPage
+from ...pages.lms.edxnotes import EdxNotesUnitPage, EdxNotesPage, EdxNotesPageNoContent
 from ...fixtures.edxnotes import EdxNotesFixture, Note, Range
 
 
@@ -413,10 +413,11 @@ class EdxNotesPageTest(EdxNotesTestMixin):
         When I open Notes page
         Then I see only "You do not have any notes within the course." message
         """
-        self.notes_page.visit()
+        notes_page_empty = EdxNotesPageNoContent(self.browser, self.course_id)
+        notes_page_empty.visit()
         self.assertIn(
             "You have not made any notes in this course yet. Other students in this course are using notes to:",
-            self.notes_page.no_content_text)
+            notes_page_empty.no_content_text)
 
     def test_recent_activity_view(self):
         """
@@ -479,7 +480,9 @@ class EdxNotesPageTest(EdxNotesTestMixin):
         And I see correct content in the notes and groups
         """
         self._add_default_notes()
-        self.notes_page.visit().switch_to_tab("structure")
+        self.notes_page.visit()
+        self.notes_page.wait_for_page()
+        self.notes_page.switch_to_tab("structure")
 
         notes = self.notes_page.notes
         groups = self.notes_page.groups
@@ -580,6 +583,7 @@ class EdxNotesPageTest(EdxNotesTestMixin):
 
         self._add_default_notes()
         self.notes_page.visit()
+        self.notes_page.wait_for_page()
         note = self.notes_page.notes[0]
         assert_page(note)
 
@@ -605,6 +609,7 @@ class EdxNotesPageTest(EdxNotesTestMixin):
         """
         self._add_default_notes()
         self.notes_page.visit()
+        self.notes_page.wait_for_page()
         # Run the search with whitespaces only
         self.notes_page.search("   ")
         # Displays error message
@@ -640,6 +645,7 @@ class EdxNotesPageTest(EdxNotesTestMixin):
         """
         self._add_default_notes()
         self.notes_page.visit()
+        self.notes_page.wait_for_page()
 
         # We're on Recent Activity tab.
         self.assertEqual(len(self.notes_page.tabs), 2)
@@ -706,6 +712,7 @@ class EdxNotesPageTest(EdxNotesTestMixin):
             ),
         ])
         self.notes_page.visit()
+        self.notes_page.wait_for_page()
         item = self.notes_page.notes[0]
         item.go_to_unit()
         self.courseware_page.wait_for_page()
